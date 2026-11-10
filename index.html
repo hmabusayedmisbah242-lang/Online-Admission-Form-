@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Online Admission Portal & Admin Dashboard</title>
+    <title>আন-নূর ইন্টারন্যাশনাল মাদরাসা - অনলাইন ভর্তি পোর্টাল</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -52,6 +52,16 @@
             touch-action: none;
         }
 
+        .chip-btn {
+            transition: all 0.2s ease;
+        }
+        .chip-btn.active {
+            background-color: #10b981;
+            color: #080d1a;
+            font-weight: 800;
+            border-color: #10b981;
+        }
+
         @media print {
             body * { visibility: hidden; }
             #printableSlip, #printableSlip * { visibility: visible; }
@@ -72,11 +82,11 @@
         <div class="flex items-center space-x-3">
             <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-400 to-cyan-500 p-0.5 shadow-lg">
                 <div class="w-full h-full bg-brandDark rounded-[10px] flex items-center justify-center">
-                    <i class="fa-solid fa-graduation-cap text-emerald-400 text-sm"></i>
+                    <i class="fa-solid fa-kaaba text-emerald-400 text-sm"></i>
                 </div>
             </div>
             <div>
-                <h1 class="text-xs font-black tracking-wider text-emerald-400 uppercase">ONLINE ADMISSION PORTAL</h1>
+                <h1 class="text-xs font-black tracking-wider text-emerald-400 uppercase">আন-নূর ইন্টারন্যাশনাল মাদরাসা</h1>
                 <p id="liveHeaderTime" class="text-[10px] text-cyan-400 font-bold font-mono -mt-0.5">00:00:00 AM</p>
             </div>
         </div>
@@ -98,7 +108,7 @@
         <section id="studentFormSec" class="space-y-3">
             <div class="bg-slate-900/80 p-4 rounded-2xl border border-emerald-500/20 shadow-xl space-y-3">
                 <div class="text-center border-b border-slate-800 pb-3">
-                    <span class="text-[9px] bg-emerald-500/20 text-emerald-300 font-extrabold px-2.5 py-0.5 rounded-full uppercase">MUHAMMADIA ARABIA MADRASA</span>
+                    <span class="text-[9px] bg-emerald-500/20 text-emerald-300 font-extrabold px-2.5 py-0.5 rounded-full uppercase">AN-NOOR INTERNATIONAL MADRASAH</span>
                     <h2 class="text-base font-extrabold text-white mt-1">অনলাইন ভর্তি আবেদন ফরম</h2>
                     <p class="text-[10px] text-slate-400">তারিখ: <span id="autoFormDate" class="text-emerald-400 font-bold"></span> (স্বয়ংক্রিয় নিবন্ধিত)</p>
                 </div>
@@ -113,33 +123,36 @@
                         </span>
                     </div>
 
-                    <!-- টাইপ ও অবস্থা -->
-                    <div class="grid grid-cols-2 gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                    <!-- টাইপ ও অবস্থা (কুইক চিপ বাটন) -->
+                    <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-2">
                         <div>
-                            <label class="text-[10px] font-bold text-slate-400 block mb-1">আবাসিক অবস্থা *</label>
-                            <div class="flex space-x-3 text-[11px] font-semibold text-slate-200 mt-1">
-                                <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="resType" value="আবাসিক" checked class="accent-emerald-400"> <span>আবাসিক</span></label>
-                                <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="resType" value="অনাবাসিক" class="accent-emerald-400"> <span>অনাবাসিক</span></label>
+                            <label class="text-[10px] font-bold text-slate-400 block mb-1">আবাসিক অবস্থা (টাচ করে সিলেক্ট করুন)</label>
+                            <div class="flex space-x-2">
+                                <button type="button" onclick="selectChip('resType', 'আবাসিক', this)" class="chip-btn resType-btn active flex-1 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-[11px] font-bold text-slate-300 text-center">আবাসিক</button>
+                                <button type="button" onclick="selectChip('resType', 'অনাবাসিক', this)" class="chip-btn resType-btn flex-1 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-[11px] font-bold text-slate-300 text-center">অনাবাসিক</button>
                             </div>
+                            <input type="hidden" id="resTypeVal" value="আবাসিক">
                         </div>
+
                         <div>
-                            <label class="text-[10px] font-bold text-slate-400 block mb-1">শিক্ষার্থীর ধরন *</label>
-                            <div class="flex space-x-3 text-[11px] font-semibold text-slate-200 mt-1">
-                                <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="stuType" value="নতুন" checked class="accent-emerald-400"> <span>নতুন</span></label>
-                                <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="stuType" value="পুরাতন" class="accent-emerald-400"> <span>পুরাতন</span></label>
+                            <label class="text-[10px] font-bold text-slate-400 block mb-1">শিক্ষার্থীর ধরন (টাচ করে সিলেক্ট করুন)</label>
+                            <div class="flex space-x-2">
+                                <button type="button" onclick="selectChip('stuType', 'নতুন', this)" class="chip-btn stuType-btn active flex-1 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-[11px] font-bold text-slate-300 text-center">নতুন</button>
+                                <button type="button" onclick="selectChip('stuType', 'পুরাতন', this)" class="chip-btn stuType-btn flex-1 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-[11px] font-bold text-slate-300 text-center">পুরাতন</button>
                             </div>
+                            <input type="hidden" id="stuTypeVal" value="নতুন">
                         </div>
                     </div>
 
-                    <!-- মূল তথ্য -->
+                    <!-- মূল তথ্য (আংশিক তথ্যেই সাবমিট করা যাবে) -->
                     <div class="grid grid-cols-2 gap-2">
                         <div>
-                            <label class="text-[11px] font-bold text-slate-300">শিক্ষার্থীর নাম *</label>
-                            <input type="text" id="stuName" required placeholder="শিক্ষার্থীর নাম লিখুন" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400">
+                            <label class="text-[11px] font-bold text-slate-300">শিক্ষার্থীর নাম</label>
+                            <input type="text" id="stuName" placeholder="শিক্ষার্থীর নাম" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400">
                         </div>
                         <div>
-                            <label class="text-[11px] font-bold text-slate-300">বয়স *</label>
-                            <select id="stuAge" required class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400 cursor-pointer">
+                            <label class="text-[11px] font-bold text-slate-300">বয়স</label>
+                            <select id="stuAge" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400 cursor-pointer">
                                 <option value="">বয়স নির্বাচন করুন</option>
                                 <option value="৪ বছর">৪ বছর</option>
                                 <option value="৫ বছর">৫ বছর</option>
@@ -159,23 +172,23 @@
 
                     <div class="grid grid-cols-2 gap-2">
                         <div>
-                            <label class="text-[11px] font-bold text-slate-300">জন্ম তারিখ *</label>
-                            <input type="date" id="stuDob" required class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400">
+                            <label class="text-[11px] font-bold text-slate-300">জন্ম তারিখ</label>
+                            <input type="date" id="stuDob" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400">
                         </div>
                         <div>
-                            <label class="text-[11px] font-bold text-slate-300">জন্ম নিবন্ধন নম্বর *</label>
-                            <input type="number" id="stuNid" required placeholder="১৭ ডিজিটের নম্বর" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400">
+                            <label class="text-[11px] font-bold text-slate-300">জন্ম নিবন্ধন নম্বর (যদি থাকে)</label>
+                            <input type="number" id="stuNid" placeholder="১৭ ডিজিটের নম্বর (ঐচ্ছিক)" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400">
                         </div>
                     </div>
 
                     <!-- পিতা ও মাতা -->
                     <div class="grid grid-cols-2 gap-2">
                         <div>
-                            <label class="text-[11px] font-bold text-slate-300">পিতার নাম *</label>
-                            <input type="text" id="fatherName" required placeholder="পিতার নাম" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400">
+                            <label class="text-[11px] font-bold text-slate-300">পিতার নাম</label>
+                            <input type="text" id="fatherName" placeholder="পিতার নাম" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400">
                         </div>
                         <div>
-                            <label class="text-[11px] font-bold text-slate-300">পিতার পেশা *</label>
+                            <label class="text-[11px] font-bold text-slate-300">পিতার পেশা</label>
                             <select id="fatherOcc" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400 cursor-pointer">
                                 <option value="কৃষি">কৃষি</option>
                                 <option value="ব্যবসা">ব্যবসা</option>
@@ -191,11 +204,11 @@
 
                     <div class="grid grid-cols-2 gap-2">
                         <div>
-                            <label class="text-[11px] font-bold text-slate-300">মাতার নাম *</label>
-                            <input type="text" id="motherName" required placeholder="মাতার নাম" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400">
+                            <label class="text-[11px] font-bold text-slate-300">মাতার নাম</label>
+                            <input type="text" id="motherName" placeholder="মাতার নাম" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400">
                         </div>
                         <div>
-                            <label class="text-[11px] font-bold text-slate-300">মাতার পেশা *</label>
+                            <label class="text-[11px] font-bold text-slate-300">মাতার পেশা</label>
                             <select id="motherOcc" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400 cursor-pointer">
                                 <option value="গৃহিনী">গৃহিনী</option>
                                 <option value="শিক্ষকতা">শিক্ষকতা</option>
@@ -210,21 +223,21 @@
                         <label class="text-[10px] font-bold text-emerald-400 uppercase">স্থায়ী ঠিকানা (বাংলাদেশের সকল জেলা)</label>
                         <div class="grid grid-cols-2 gap-2">
                             <div>
-                                <label class="text-[9px] text-slate-400">জেলা নির্বাচন করুন *</label>
+                                <label class="text-[9px] text-slate-400">জেলা নির্বাচন করুন</label>
                                 <select id="permDist" onchange="loadThanas('permDist', 'permThana')" class="w-full mt-1 p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 focus:outline-none focus:border-emerald-400 cursor-pointer">
                                     <!-- Dynamic 64 Districts Dropdown -->
                                 </select>
                             </div>
                             <div>
-                                <label class="text-[9px] text-slate-400">থানা / উপজেলা নির্বাচন *</label>
+                                <label class="text-[9px] text-slate-400">থানা / উপজেলা নির্বাচন</label>
                                 <select id="permThana" class="w-full mt-1 p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 focus:outline-none focus:border-emerald-400 cursor-pointer">
                                     <!-- Dynamic Thana Dropdown -->
                                 </select>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-2">
-                            <input type="text" id="permVill" required placeholder="গ্রাম / মহল্লা" class="p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 focus:outline-none focus:border-emerald-400">
-                            <input type="text" id="permPo" required placeholder="ডাকঘর" class="p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 focus:outline-none focus:border-emerald-400">
+                            <input type="text" id="permVill" placeholder="গ্রাম / মহল্লা" class="p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 focus:outline-none focus:border-emerald-400">
+                            <input type="text" id="permPo" placeholder="ডাকঘর" class="p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 focus:outline-none focus:border-emerald-400">
                         </div>
                     </div>
 
@@ -253,8 +266,8 @@
 
                     <!-- মোবাইল ও অভিভাবক -->
                     <div>
-                        <label class="text-[11px] font-bold text-slate-300">মোবাইল নম্বর *</label>
-                        <input type="tel" id="stuPhone" required placeholder="017xxxxxxxx" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400">
+                        <label class="text-[11px] font-bold text-slate-300">মোবাইল নম্বর</label>
+                        <input type="tel" id="stuPhone" placeholder="017xxxxxxxx" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400">
                     </div>
 
                     <div class="grid grid-cols-3 gap-2">
@@ -298,17 +311,16 @@
 
                     <div class="grid grid-cols-2 gap-2">
                         <div>
-                            <label class="text-[11px] font-bold text-slate-300">কোন শ্রেণিতে ভর্তি হতে ইচ্ছুক *</label>
-                            <select id="stuClass" required class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400 cursor-pointer">
-                              <option value="প্লে শ্রেণি">প্লে শ্রেণি</option>
-                                <option value="নার্সারি শ্রেণি">নার্সারি শ্রেণি</option>
-                                <option value="প্রথম শ্রেণি">প্রথম শ্রেণি</option>
-                                <option value="দ্বিতীয় শ্রেণি">দ্বিতীয় শ্রেণি</option>
-                                <option value="তৃতীয় শ্রেণি">তৃতীয় শ্রেণি</option>
-                          </select>
+                            <label class="text-[11px] font-bold text-slate-300">কোন বিভাগে ভর্তি ইচ্ছুক</label>
+                            <select id="stuClass" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400 cursor-pointer">
+                                <option value="নূরানী বিভাগ">নূরানী বিভাগ</option>
+                                <option value="হিফজুল কুরআন">হিফজুল কুরআন</option>
+                                <option value="কিতাব বিভাগ">কিতাব বিভাগ</option>
+                                <option value="নাজেরা বিভাগ">নাজেরা বিভাগ</option>
+                            </select>
                         </div>
                         <div>
-                            <label class="text-[11px] font-bold text-slate-300">ছবি (ঐচ্ছিক)</label>
+                            <label class="text-[11px] font-bold text-slate-300">ছবি লিংক (ঐচ্ছিক)</label>
                             <input type="url" id="stuPhoto" placeholder="https://..." class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400">
                         </div>
                     </div>
@@ -316,7 +328,7 @@
                     <!-- ডিজিটাল স্বাক্ষর বোর্ড (Digital Signature Canvas) -->
                     <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2">
                         <div class="flex justify-between items-center">
-                            <label class="text-[11px] font-bold text-emerald-400">আবেদনকারীর ডিজিটাল স্বাক্ষর (স্ক্রিনে আঙুল দিয়ে আকুন) *</label>
+                            <label class="text-[11px] font-bold text-emerald-400">আবেদনকারীর ডিজিটাল স্বাক্ষর (স্ক্রিনে আঙুল দিয়ে আকুন)</label>
                             <button type="button" onclick="clearSignature()" class="text-[9px] bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded border border-rose-500/30">মুছে ফেলুন</button>
                         </div>
                         <canvas id="sigCanvas" width="320" height="100" class="w-full h-24 bg-slate-900 border border-slate-700 rounded-lg cursor-crosshair"></canvas>
@@ -390,8 +402,8 @@
     <!-- PRINT SLIP CONTAINER (Hidden normally) -->
     <div id="printableSlip" class="hidden p-6 text-black space-y-4">
         <div class="text-center border-b-2 border-black pb-3 relative">
-            <h2 class="text-lg font-bold">আন নূর ইন্টারন্যাশনাল মাদরাসা</h2>
-            <p class="text-[10px]">৭ নং উপশহর , সদর , দিনাজপুর । মোবাইল: ০১৭৯৭১১১৫৪২</p>
+            <h2 class="text-lg font-bold">আন-নূর ইন্টারন্যাশনাল মাদরাসা</h2>
+            <p class="text-[10px]">পাঁচকাঠি (মিঞারহাট), পটুরিয়া, গোসাইরহাট, শরীয়তপুর। মোবাইল: ০১৩২৯-১৪২০০০</p>
             <div class="my-2 inline-block border border-black px-4 py-1 text-sm font-bold bg-gray-100">ভর্তি ফরম</div>
         </div>
         <div id="printDetails" class="space-y-2 text-xs leading-relaxed"></div>
@@ -434,6 +446,12 @@
             "চাঁদপুর": ["চাঁদপুর সদর", "হাজীগঞ্জ", "শাহরাস্তি", "মতলব উত্তর", "মতলব দক্ষিণ", "ফরিদগঞ্জ"]
         };
 
+        function selectChip(type, val, btnElem) {
+            document.querySelectorAll('.' + type + '-btn').forEach(b => b.classList.remove('active'));
+            btnElem.classList.add('active');
+            document.getElementById(type + 'Val').value = val;
+        }
+
         function populateDistricts() {
             const permDist = document.getElementById('permDist');
             const tempDist = document.getElementById('tempDist');
@@ -447,8 +465,8 @@
             tempDist.innerHTML = options;
 
             // Default Select Shariatpur
-            permDist.value = "দিনাজপুর";
-            tempDist.value = "দিনাজপুর";
+            permDist.value = "শরীয়তপুর";
+            tempDist.value = "শরীয়তপুর";
 
             loadThanas('permDist', 'permThana');
             loadThanas('tempDist', 'tempThana');
@@ -529,7 +547,7 @@
         import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Firebase Setup Config
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'misbah-admission-app';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'annoor-admission-app';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
             apiKey: "",
             authDomain: "demo.firebaseapp.com",
@@ -585,8 +603,8 @@
             e.preventDefault();
             if (!currentUser) return;
 
-            const resType = document.querySelector('input[name="resType"]:checked')?.value || 'আবাসিক';
-            const stuType = document.querySelector('input[name="stuType"]:checked')?.value || 'নতুন';
+            const resType = document.getElementById('resTypeVal').value || 'আবাসিক';
+            const stuType = document.getElementById('stuTypeVal').value || 'নতুন';
             
             const name = document.getElementById('stuName').value.trim();
             const age = document.getElementById('stuAge').value;
@@ -678,7 +696,7 @@
                 <p><strong>অস্থায়ী ঠিকানা:</strong> গ্রাম: ${item.tempVill || '-'}, ডাকঘর: ${item.tempPo || '-'}, থানা: ${item.tempThana || '-'}, জেলা: ${item.tempDist || '-'}</p>
                 <p><strong>মোবাইল নম্বর:</strong> ${item.phone || '-'}</p>
                 <p><strong>অভিভাবকের নাম:</strong> ${item.guardianName || '-'} (সম্পর্ক: ${item.guardianRel || '-'}, পেশা: ${item.guardianOcc || '-'})</p>
-                <p><strong>পিতার অবর্তমানে অভিভাবকের নাম:</strong> ${item.murabbiName || '-'}</p>
+                <p><strong>তা’লীমী মুরব্বীর নাম:</strong> ${item.murabbiName || '-'}</p>
                 <p><strong>পূর্বে অধ্যায়নকৃত প্রতিষ্ঠান:</strong> ${item.prevInst || '-'}</p>
                 <p><strong>ভর্তিকৃত বিভাগ:</strong> ${item.stuClass || '-'}</p>
                 
@@ -732,11 +750,11 @@
                         <div class="flex items-center space-x-2">
                             <img src="${item.photo}" class="w-8 h-8 rounded-full object-cover border border-emerald-400">
                             <div>
-                                <h4 class="font-bold text-white">${item.name}</h4>
-                                <p class="text-[10px] text-emerald-400 font-semibold">${item.stuClass} (${item.resType || ''})</p>
+                                <h4 class="font-bold text-white">${item.name || 'নাম বিহীন'}</h4>
+                                <p class="text-[10px] text-emerald-400 font-semibold">${item.stuClass || 'বিভাগ নির্বাচন করা হয়নি'} (${item.resType || ''})</p>
                             </div>
                         </div>
-                        <span class="text-[9px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">${item.phone}</span>
+                        <span class="text-[9px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">${item.phone || 'নম্বর নেই'}</span>
                     </div>
                     <div class="text-[10px] text-slate-400 space-y-0.5">
                         <p><strong>পিতা:</strong> ${item.fatherName || '-'} | <strong>পেশা:</strong> ${item.fatherOcc || '-'}</p>
@@ -810,4 +828,4 @@
         }
     </script>
 </body>
-                         </html>
+</html>
