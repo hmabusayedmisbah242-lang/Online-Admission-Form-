@@ -123,15 +123,14 @@
                         </span>
                     </div>
 
-                    <!-- টাইপ ও অবস্থা (কুইক চিপ বাটন) -->
+                    <!-- টাইপ ও অবস্থা (ডিফল্ট: অনাবাসিক) -->
                     <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-2">
                         <div>
-                            <label class="text-[10px] font-bold text-slate-400 block mb-1">আবাসিক অবস্থা (টাচ করে সিলেক্ট করুন)</label>
+                            <label class="text-[10px] font-bold text-slate-400 block mb-1">আবাসিক অবস্থা</label>
                             <div class="flex space-x-2">
-                                <button type="button" onclick="selectChip('resType', 'আবাসিক', this)" class="chip-btn resType-btn active flex-1 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-[11px] font-bold text-slate-300 text-center">আবাসিক</button>
-                                <button type="button" onclick="selectChip('resType', 'অনাবাসিক', this)" class="chip-btn resType-btn flex-1 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-[11px] font-bold text-slate-300 text-center">অনাবাসিক</button>
+                                <button type="button" class="chip-btn resType-btn active flex-1 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-[11px] font-bold text-emerald-400 text-center">অনাবাসিক</button>
                             </div>
-                            <input type="hidden" id="resTypeVal" value="আবাসিক">
+                            <input type="hidden" id="resTypeVal" value="অনাবাসিক">
                         </div>
 
                         <div>
@@ -311,12 +310,13 @@
 
                     <div class="grid grid-cols-2 gap-2">
                         <div>
-                            <label class="text-[11px] font-bold text-slate-300">কোন বিভাগে ভর্তি ইচ্ছুক</label>
+                            <label class="text-[11px] font-bold text-slate-300">কোন শ্রেণীতে ভর্তি ইচ্ছুক</label>
                             <select id="stuClass" class="w-full mt-1 p-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-emerald-400 cursor-pointer">
-                                <option value="নূরানী বিভাগ">নূরানী বিভাগ</option>
-                                <option value="হিফজুল কুরআন">হিফজুল কুরআন</option>
-                                <option value="কিতাব বিভাগ">কিতাব বিভাগ</option>
-                                <option value="নাজেরা বিভাগ">নাজেরা বিভাগ</option>
+                                <option value="প্লে শ্রেণী">প্লে শ্রেণী</option>
+                                <option value="নার্সারি">নার্সারি</option>
+                                <option value="প্রথম শ্রেণী">প্রথম শ্রেণী</option>
+                                <option value="দ্বিতীয় শ্রেণী">দ্বিতীয় শ্রেণী</option>
+                                <option value="তৃতীয় শ্রেণী">তৃতীয় শ্রেণী</option>
                             </select>
                         </div>
                         <div>
@@ -350,13 +350,13 @@
                         <i class="fa-solid fa-lock"></i>
                     </div>
                     <h2 class="text-sm font-extrabold text-white">অ্যাডমিন অ্যাক্সেস</h2>
-                    <p class="text-[10px] text-slate-400">সকল আবেদন দেখার জন্য অ্যাডমিন পাসওয়ার্ড দিন</p>
+                    <p class="text-[10px] text-slate-400">গোপন পাসওয়ার্ড দিন</p>
                 </div>
 
                 <div class="space-y-3">
                     <div>
                         <label class="text-[11px] font-bold text-slate-300">Admin Password</label>
-                        <input type="password" id="adminPass" placeholder="পাসওয়ার্ড দিন (Default: misbah123)" class="w-full mt-1 p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-400">
+                        <input type="password" id="adminPass" placeholder="পাসওয়ার্ড লিখুন" class="w-full mt-1 p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-cyan-400">
                     </div>
                     <button onclick="loginAdmin()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-black py-2.5 rounded-xl text-xs shadow-lg transition active:scale-95">
                         ড্যাশবোর্ডে লগইন করুন
@@ -603,7 +603,7 @@
             e.preventDefault();
             if (!currentUser) return;
 
-            const resType = document.getElementById('resTypeVal').value || 'আবাসিক';
+            const resType = document.getElementById('resTypeVal').value || 'অনাবাসিক';
             const stuType = document.getElementById('stuTypeVal').value || 'নতুন';
             
             const name = document.getElementById('stuName').value.trim();
@@ -652,12 +652,13 @@
             try {
                 const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'admissions');
                 await addDoc(colRef, payload);
-                showToast("ফরম সফলভাবে জমা হয়েছে! 🎉");
+                showToast("ফরম সফলভাবে এডমিনের কাছে পৌঁছে গেছে! 🎉");
                 document.getElementById('admissionForm').reset();
                 clearSignature();
                 populateDistricts();
             } catch (err) {
-                showToast("ফরম জমা দিতে ব্যর্থ হয়েছে!", "fa-triangle-exclamation");
+                console.error("Submission error:", err);
+                showToast("ফরম জমা দিতে ব্যর্থ হয়েছে! ফায়ারবেস বা নেটওয়ার্ক চেক করুন", "fa-triangle-exclamation");
             }
         }
 
